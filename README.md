@@ -6,7 +6,7 @@ A breadboard Pomodoro timer written in C for a GD32VF103 board. It uses one butt
 
 The current firmware is hardware-tested with accelerated intervals: 10 seconds of focus, 5 seconds of break, and a 1-second buzzer alert on each transition. A short press starts or pauses the timer; pressing again resumes with the saved remaining time. Pausing turns off both LEDs and silences the buzzer.
 
-For everyday use, change the two interval definitions in `src/main.c` to:
+For everyday use, change the two interval definitions in `focusbox/src/main.c` to:
 
 ```c
 #define FOCUS_MS (25ULL * 60 * 1000)
@@ -29,9 +29,13 @@ stateDiagram-v2
     BreakPaused --> Break: Button press
 ```
 
-The button starts, pauses, and resumes the timer.
-Green indicates focus, blue indicates a break.
-A buzzer sounds when the phase changes.
+The button starts, pauses, and resumes the timer. Green indicates focus, blue indicates a break, and the buzzer sounds when the phase changes.
+
+## Circuit
+
+![FocusBox circuit schematic](focusbox/hardware/focusbox-schematic.svg)
+
+See the [wiring guide](focusbox/docs/wiring.md) for component connections. GPIO pins use 3.3 V logic; never connect 5 V to a GPIO.
 
 ## Hardware
 
@@ -42,8 +46,6 @@ A buzzer sounds when the phase changes.
 - Active buzzer rated for 5 V
 - 2N2222-family NPN transistor and 1 kΩ base resistor
 - 1N4007 diode across the buzzer (recommended for an electromagnetic buzzer)
-
-See [wiring guide](focusbox/docs/wiring.md) before assembling. GPIO pins use 3.3 V logic; never connect 5 V to a GPIO.
 
 ## Controls and indicators
 
@@ -56,35 +58,26 @@ See [wiring guide](focusbox/docs/wiring.md) before assembling. GPIO pins use 3.3
 
 ## Build and flash
 
-This project uses the course GD32 Makefile and SDK layout. The Makefile expects these sibling folders relative to the project directory:
+This project uses the course GD32 Makefile and SDK layout. The Makefile expects the course SDK, RISC-V compiler, and DFU programmer in the same relative locations used for the working prototype.
 
-```text
-project-folder/
-├── focusbox/       # this repository
-├── firmware/
-├── compiler/bin/
-└── programmer/
-```
-
-Open a terminal in `focusbox/` and run:
+From the project firmware directory, run:
 
 ```sh
 mingw32-make
 mingw32-make dfu
 ```
 
-The SDK, RISC-V compiler and DFU programmer are external dependencies and are not included here. Use the same course toolchain that successfully built and flashed the prototype. After flashing, press RESET to run the firmware.
+After flashing, press RESET to run the firmware. The SDK, compiler, and DFU programmer are external dependencies and are not included in this repository.
 
 ## Repository layout
 
 - `focusbox/src/main.c` — timer, button filtering, LEDs and buzzer control
-- `docs/wiring.md` — breadboard connection guide
-- `docs/PLAN.md` — project scope and next improvements
-- `hardware/` — add your own wiring photo or schematic here
-- `Makefile` — course build and DFU upload rules
+- `focusbox/docs/wiring.md` — breadboard connection guide
+- `focusbox/docs/PLAN.md` — project scope and next improvements
+- `focusbox/hardware/focusbox-schematic.svg` — circuit diagram
+- `focusbox/Makefile` — course build and DFU upload rules
 
 ## Known limitations
 
 - The timing conversion uses the GD32 course SDK's `get_timer_value()` and `SystemCoreClock` setup; verify accuracy against a reference clock before presenting timing precision as measured.
-- Transistor lead order varies between 2N2222/PN2222 variants. Follow the lead arrangement that was physically tested with your specific transistor; do not identify its pins from a generic picture alone.
-- Add a clear photo of the finished circuit and a short demo recording before publishing the repository.
+- Transistor lead order varies between 2N2222/PN2222 variants. Follow the lead arrangement tested with your specific transistor; do not identify its pins from a generic picture alone.
