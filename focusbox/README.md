@@ -15,6 +15,24 @@ For everyday use, change the two interval definitions in `src/main.c` to:
 
 The prototype currently alternates focus and short breaks. It does not yet implement a long break, long-press reset, stored session history, or a display.
 
+## How it works
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Focus: Button press
+    Focus --> Break: Focus timer ends / beep
+    Break --> Focus: Break timer ends / beep
+    Focus --> FocusPaused: Button press
+    FocusPaused --> Focus: Button press
+    Break --> BreakPaused: Button press
+    BreakPaused --> Break: Button press
+```
+
+The button starts, pauses, and resumes the timer.
+Green indicates focus, blue indicates a break.
+A buzzer sounds when the phase changes.
+
 ## Hardware
 
 - GD32VF103 development board and USB cable
@@ -25,7 +43,7 @@ The prototype currently alternates focus and short breaks. It does not yet imple
 - 2N2222-family NPN transistor and 1 kΩ base resistor
 - 1N4007 diode across the buzzer (recommended for an electromagnetic buzzer)
 
-See [wiring guide](docs/wiring.md) before assembling. GPIO pins use 3.3 V logic; never connect 5 V to a GPIO.
+See [wiring guide](focusbox/docs/wiring.md) before assembling. GPIO pins use 3.3 V logic; never connect 5 V to a GPIO.
 
 ## Controls and indicators
 
@@ -70,7 +88,3 @@ The SDK, RISC-V compiler and DFU programmer are external dependencies and are no
 - The timing conversion uses the GD32 course SDK's `get_timer_value()` and `SystemCoreClock` setup; verify accuracy against a reference clock before presenting timing precision as measured.
 - Transistor lead order varies between 2N2222/PN2222 variants. Follow the lead arrangement that was physically tested with your specific transistor; do not identify its pins from a generic picture alone.
 - Add a clear photo of the finished circuit and a short demo recording before publishing the repository.
-
-## CV description
-
-**FocusBox — Embedded Pomodoro Timer:** Built a GD32VF103-based study timer in C with debounced button input, non-blocking timekeeping, LED phase indicators, and transistor-driven buzzer output. Prototyped and tested the circuit on a solderless breadboard.
