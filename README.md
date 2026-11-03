@@ -77,7 +77,7 @@ The SDK, RISC-V compiler and DFU programmer are external dependencies and are no
 
 ## Repository layout
 
-- `src/main.c` — timer, button filtering, LEDs and buzzer control
+- `focusbox/src/main.c` — timer, button filtering, LEDs and buzzer control
 - `docs/wiring.md` — breadboard connection guide
 - `docs/PLAN.md` — project scope and next improvements
 - `hardware/` — add your own wiring photo or schematic here
