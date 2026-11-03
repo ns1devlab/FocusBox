@@ -31,10 +31,6 @@ stateDiagram-v2
 
 The button starts, pauses, and resumes the timer. Green indicates focus, blue indicates a break, and the buzzer sounds when the phase changes.
 
-## Circuit
-
-![FocusBox circuit schematic](focusbox/hardware/focusbox-schematic.svg)
-
 See the [wiring guide](focusbox/docs/wiring.md) for component connections. GPIO pins use 3.3 V logic; never connect 5 V to a GPIO.
 
 ## Hardware
@@ -74,7 +70,6 @@ After flashing, press RESET to run the firmware. The SDK, compiler, and DFU prog
 - `focusbox/src/main.c` — timer, button filtering, LEDs and buzzer control
 - `focusbox/docs/wiring.md` — breadboard connection guide
 - `focusbox/docs/PLAN.md` — project scope and next improvements
-- `focusbox/hardware/focusbox-schematic.svg` — circuit diagram
 - `focusbox/Makefile` — course build and DFU upload rules
 
 ## Known limitations
